@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Form = () => {
+const Form = ({ analyze }) => {
   const [startDate, setStartDate] = useState({ date: '', number: '' });
   const [endDate, setEndDate] = useState({ date: '', number: '' });
 
@@ -10,7 +10,14 @@ const Form = () => {
       `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=eur&from=${startDate.number}&to=${endDate.number}`
     )
       .then((response) => response.json())
-      .then((json) => console.log(json))
+      .then((json) =>
+        analyze({
+          startDate: startDate.date,
+          endDate: endDate.date,
+          days: (endDate.number - startDate.number) / 86400,
+          jsonData: json,
+        })
+      )
       .catch((error) => console.error(error));
   };
   return (
