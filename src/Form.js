@@ -4,21 +4,25 @@ const Form = ({ analyze }) => {
   const [startDate, setStartDate] = useState({ date: '', number: '' });
   const [endDate, setEndDate] = useState({ date: '', number: '' });
 
-  const handleSubmit = (event) => {
+  const today = new Date().toLocaleDateString('en-ca');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    fetch(
-      `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=eur&from=${startDate.number}&to=${endDate.number}`
-    )
-      .then((response) => response.json())
-      .then((json) =>
-        analyze({
-          startDate: startDate.date,
-          endDate: endDate.date,
-          days: (endDate.number - startDate.number) / 86400,
-          jsonData: json,
-        })
-      )
-      .catch((error) => console.error(error));
+
+    try {
+      const res = await fetch(
+        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=eur&from=${startDate.number}&to=${endDate.number}`
+      );
+      const data = await res.json();
+      await analyze({
+        startDate: startDate.date,
+        endDate: endDate.date,
+        days: (endDate.number - startDate.number) / 86400,
+        jsonData: data,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -33,6 +37,7 @@ const Form = ({ analyze }) => {
             number: Math.floor(event.target.valueAsDate.getTime() / 1000),
           })
         }
+        max={today}
         required
       />
       <label htmlFor="end">End date:</label>
@@ -49,8 +54,8 @@ const Form = ({ analyze }) => {
           })
         }
         min={startDate.date}
+        max={today}
         required
-        disabled={!startDate.date}
       />
       <input type="submit" value="Analyze" />
     </form>
