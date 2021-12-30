@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Information = (props) => {
-  const [prices, setPrices] = useState([]);
   const [maxLenOfDecPrices, setMaxLenOfDecPrices] = useState(null);
   const [highestVolume, setHighestVolume] = useState({
-    volume: null,
+    value: null,
     date: null,
   });
+  const [bestBuyDate, setBestBuyDate] = useState({ value: null, date: null });
+  const [bestSellDate, setBestSellDate] = useState({ value: null, date: null });
 
   const dates = [props.data.startDate, props.data.endDate];
   const days = props.data.days;
   const data = props.data.jsonData;
+  let prices = useRef([]);
 
   const formatDate = (date) => {
     const newDate = new Date(date).toLocaleDateString('en-gb', {
@@ -78,22 +80,36 @@ const Information = (props) => {
       return max;
     };
 
-    const highestVolume = (total_volumes) => {
-      let volumes = [];
+    const findHighestValue = (array) => {
+      let values = [];
 
-      total_volumes.forEach((index) => {
-        volumes.push(index[1]);
+      array.forEach((index) => {
+        values.push(index[1]);
       });
 
-      const highestVolume = Math.max(...volumes);
-      const date = total_volumes.find((index) => index[1] === highestVolume)[0];
+      const highestValue = Math.max(...values);
+      const date = array.find((index) => index[1] === highestValue)[0];
 
-      return { volume: highestVolume, date };
+      return { value: highestValue, date };
     };
-    setPrices(retrievePrices());
+
+    const findLowestValue = (array) => {
+      let values = [];
+
+      array.forEach((index) => {
+        values.push(index[1]);
+      });
+
+      const lowestValue = Math.min(...values);
+      const date = array.find((index) => index[1] === lowestValue)[0];
+
+      return { value: lowestValue, date };
+    };
+    prices.current = retrievePrices();
     setMaxLenOfDecPrices(maxLenOfDecPrices(retrievePrices()));
-    setHighestVolume(highestVolume(data.total_volumes));
-    console.log('useEffect ran');
+    setHighestVolume(findHighestValue(data.total_volumes));
+    setBestBuyDate(findLowestValue(prices.current));
+    setBestSellDate(findHighestValue(prices.current));
   }, [data, days]);
 
   return (
@@ -103,9 +119,15 @@ const Information = (props) => {
       </h2>
       <h3>Longest bearish trend within these dates was: {maxLenOfDecPrices}</h3>
       <h3>
-        Highest trading volume: {highestVolume.volume}€ on{' '}
+        Highest trading volume: {highestVolume.value} on{' '}
         {formatDate(highestVolume.date)}
       </h3>
+      {maxLenOfDecPrices !== prices.current.length - 1 && (
+        <div className="card">
+          <p>Best day to buy: {formatDate(bestBuyDate.date)}</p>
+          <p>Best day to sell: {formatDate(bestSellDate.date)}</p>
+        </div>
+      )}
     </div>
   );
 };
