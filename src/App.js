@@ -9,7 +9,7 @@ const App = () => {
   return (
     <div className="App">
       <div className="content">
-        <h1>Scrooge McCrypto</h1>
+        <h1 className="title">Scrooge McCrypto</h1>
         <Form analyze={async (json) => await setData(json)} />
         {data && <Information data={data} />}
       </div>

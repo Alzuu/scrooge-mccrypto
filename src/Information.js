@@ -112,22 +112,45 @@ const Information = (props) => {
     setBestSellDate(findHighestValue(prices.current));
   }, [data, days]);
 
+  const shouldBuyOrSell = maxLenOfDecPrices !== prices.current.length - 1;
+
   return (
-    <div className="info">
-      <h2>
-        Information from {formatDate(dates[0])} to {formatDate(dates[1])}
+    <div>
+      <h2 className="date-range">
+        {formatDate(dates[0])} ➡️ {formatDate(dates[1])}
       </h2>
-      <h3>Longest bearish trend within these dates was: {maxLenOfDecPrices}</h3>
-      <h3>
-        Highest trading volume: {highestVolume.value} on{' '}
-        {formatDate(highestVolume.date)}
-      </h3>
-      {maxLenOfDecPrices !== prices.current.length - 1 && (
-        <div className="card">
-          <p>Best day to buy: {formatDate(bestBuyDate.date)}</p>
-          <p>Best day to sell: {formatDate(bestSellDate.date)}</p>
+      <div className="cards">
+        <div className="card card-1">
+          <div className="card-icon">📉</div>
+          <p className="info">Longest bearish trend within these dates</p>
+          <p className="value">{maxLenOfDecPrices}</p>
         </div>
-      )}
+        <div className="card card-2">
+          <div className="card-icon">📊</div>
+          <p className="info">Highest trading volume</p>
+          <p className="value">
+            {highestVolume.value} on {formatDate(highestVolume.date)}
+          </p>
+        </div>
+        <div className="card card-3">
+          {shouldBuyOrSell ? (
+            <>
+              <div className="card-icon">💰</div>
+              <p className="info">
+                Best day to buy: {formatDate(bestBuyDate.date)}
+              </p>
+              <p className="value">
+                Best day to sell: {formatDate(bestSellDate.date)}
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="card-icon">🛑</div>
+              <p className="stop">Don't Buy & Don't Sell</p>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
