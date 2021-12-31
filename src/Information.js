@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 const Information = (props) => {
   const [maxLenOfDecPrices, setMaxLenOfDecPrices] = useState(null);
@@ -13,13 +13,12 @@ const Information = (props) => {
   const days = props.data.days;
   const data = props.data.jsonData;
   let prices = useRef([]);
-
   const formatDate = (date) => {
-    const newDate = new Date(date).toLocaleDateString('en-gb', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    const newDate = new Date(date).toLocaleDateString("en-gb", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
     return newDate;
   };
@@ -123,7 +122,7 @@ const Information = (props) => {
         <div className="card card-1">
           <div className="card-icon">📉</div>
           <p className="info">Longest bearish trend within these dates</p>
-          <p className="value">{maxLenOfDecPrices}</p>
+          <p className="value">{days >= 1 ? maxLenOfDecPrices : 0}</p>
         </div>
         <div className="card card-2">
           <div className="card-icon">📊</div>
@@ -133,7 +132,7 @@ const Information = (props) => {
           </p>
         </div>
         <div className="card card-3">
-          {shouldBuyOrSell ? (
+          {shouldBuyOrSell && days >= 1 ? (
             <>
               <div className="card-icon">💰</div>
               <p className="info">
