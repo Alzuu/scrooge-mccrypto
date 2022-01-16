@@ -1,6 +1,6 @@
 # Scrooge McCrypto
 
-Scrooge McCrypto is a pre-assignment project for the Vincit Rising Star 2021 program. It is a web app, written in React, that communicates with [CoinGecko's public API](https:www.coingecko.com/en/api/documentation) to serve trends and statistics on Bitcoin to the end-user. In this case, the end-user is none other than Scrooge McDuck himself 🦆.
+Scrooge McCrypto is a pre-assignment project for the Vincit Rising Star 2022 program. It is a web app, written in React, that communicates with [CoinGecko's public API](https:www.coingecko.com/en/api/documentation) to serve trends and statistics on Bitcoin to the end-user. In this case, the end-user is none other than Scrooge McDuck himself 🦆.
 
 ## How to Install and Run the Project
 
