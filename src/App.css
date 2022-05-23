@@ -1,6 +1,19 @@
+@media (prefers-color-scheme: dark) {
+  .App {
+    background-color: #333;
+  }
+  .title {
+    color: white;
+  }
+  label {
+    color: white;
+  }
+}
+
 .content {
   padding: 1em;
   width: 100vw;
+  min-height: 100vh;
 }
 
 .title {
@@ -103,21 +116,15 @@ input[type="submit"] {
 }
 
 .cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 500px));
+  justify-content: center;
   gap: 1em;
 }
 
 .card {
   padding: 1.5em;
-  width: 500px;
-  min-height: 200px;
   border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
   color: rgba(255, 255, 255, 0.9);
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
   font-size: 1.5em;
@@ -163,17 +170,12 @@ input[type="submit"] {
   background: radial-gradient(#5ae3b3, #58d5c9);
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 1200px) {
   .title {
     font-size: 2.4em;
   }
-
   .form {
     font-size: 0.8em;
-  }
-
-  .cards {
-    justify-content: center;
   }
   .date-range {
     font-size: 20px;
